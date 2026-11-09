@@ -1,12 +1,76 @@
-
 import { useState } from "react";
 
 // The three pages of our application
 type Page = "Calendar" | "Tasks" | "Habits";
 
+type Task = {
+  id: number;
+  title: string;
+  due: "Today" | "Tomorrow" | "Later";
+  done: boolean;
+  color: string;
+};
+
+
 function App() {
   // Remember which page the user is currently viewing
   const [currentPage, setCurrentPage] = useState<Page>("Calendar");
+
+  
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      id: 1,
+      title: "Finish assignment",
+      due: "Today",
+      done: false,
+      color: "#9AA4F1",
+    },
+    {
+      id: 2,
+      title: "Review research progress",
+      due: "Today",
+      done: false,
+      color: "#8EC5AD",
+    },
+    {
+      id: 3,
+      title: "Buy groceries",
+      due: "Tomorrow",
+      done: false,
+      color: "#E3AE85",
+    },
+    {
+      id: 4,
+      title: "Work on habit tracker",
+      due: "Later",
+      done: false,
+      color: "#D6A2CE",
+    },
+  ]);
+
+
+
+  function toggleTask(id: number) {
+    setTasks((previousTasks) =>
+      previousTasks.map((task) =>
+        task.id === id
+          ? { ...task, done: !task.done }
+          : task
+      )
+    );
+  }
+
+  function changeTaskColor(id: number, newColor: string) {
+    setTasks((previousTasks) =>
+      previousTasks.map((task) =>
+        task.id === id
+          ? { ...task, color: newColor }
+          : task
+      )
+    );
+  }
+
+
 
   const pages: Page[] = ["Calendar", "Tasks", "Habits"];
 
@@ -27,6 +91,7 @@ function App() {
         }
 
         #root {
+          width: 100%;
           max-width: none;
           margin: 0;
           padding: 0;
@@ -35,6 +100,7 @@ function App() {
 
         .app {
           display: flex;
+          width: 100%;
           min-height: 100vh;
         }
 
@@ -94,12 +160,62 @@ function App() {
         }
 
         .card {
-          background: #ffffff;
-          border: 1px solid #e5e5e5;
+          background: #333438;
+          color: #f5f5f5;
+          border: 1px solid #45464b;
           border-radius: 15px;
           padding: 24px;
           max-width: 650px;
         }
+
+        .task-section {
+          margin-bottom: 28px;
+        }
+
+        .task-section h3 {
+          color: #b8bac0;
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 12px;
+        }
+
+        .task-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 15px;
+
+          padding: 16px;
+          margin-bottom: 10px;
+
+          background: #3b3c40;
+          border: 1px solid #48494d;
+          border-left: 5px solid;
+          border-radius: 10px;
+        }
+
+        .task-details {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+        }
+
+        .task-details input[type="checkbox"] {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+        }
+
+        .task-item input[type="color"] {
+          width: 32px;
+          height: 32px;
+          padding: 2px;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+        }
+
 
         @media (max-width: 650px) {
           .app {
@@ -136,7 +252,7 @@ function App() {
       <div className="app">
         {/* Sidebar navigation */}
         <aside className="sidebar">
-          <h1 className="logo">dayform.</h1>
+          <h1 className="logo">diddyblud.</h1>
 
           <nav className="navigation">
             {pages.map((page) => (
@@ -168,9 +284,55 @@ function App() {
               <p>Our calendar will appear here.</p>
             )}
 
+
             {currentPage === "Tasks" && (
-              <p>Our task manager will appear here.</p>
+              <div className="task-list">
+                {(["Today", "Tomorrow", "Later"] as const).map((day) => (
+                  <section key={day} className="task-section">
+                    <h3>{day}</h3>
+
+                    {tasks
+                      .filter((task) => task.due === day)
+                      .map((task) => (
+                        <div
+                          key={task.id}
+                          className="task-item"
+                          style={{ borderLeftColor: task.color }}
+                        >
+                          <label className="task-details">
+                            <input
+                              type="checkbox"
+                              checked={task.done}
+                              onChange={() => toggleTask(task.id)}
+                            />
+
+                            <span
+                              style={{
+                                textDecoration: task.done
+                                  ? "line-through"
+                                  : "none",
+                                opacity: task.done ? 0.5 : 1,
+                              }}
+                            >
+                              {task.title}
+                            </span>
+                          </label>
+
+                          <input
+                            type="color"
+                            value={task.color}
+                            aria-label={`Change color for ${task.title}`}
+                            onChange={(event) =>
+                              changeTaskColor(task.id, event.target.value)
+                            }
+                          />
+                        </div>
+                      ))}
+                  </section>
+                ))}
+              </div>
             )}
+
 
             {currentPage === "Habits" && (
               <p>Our habit tracker will appear here.</p>
