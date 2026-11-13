@@ -1,4 +1,3 @@
-
 /* ========================================
    MAIN APPLICATION
    ======================================== */
@@ -92,7 +91,7 @@
 }
 
 /* ========================================
-   CATEGORY SETTINGS
+    CATEGORY SETTINGS
    ======================================== */
 
 .category-settings {
@@ -161,7 +160,7 @@
 }
 
 /* ========================================
-   BUTTONS AND INPUTS
+    BUTTONS AND INPUTS
    ======================================== */
 
 .small-button,
@@ -251,7 +250,7 @@
 }
 
 /* ========================================
-   TASKS
+    TASKS
    ======================================== */
 
 .task-section {
@@ -324,7 +323,7 @@
 }
 
 /* ========================================
-   MOBILE RESPONSIVENESS
+    MOBILE RESPONSIVENESS
    ======================================== */
 
 @media (max-width: 650px) {
@@ -375,4 +374,46 @@
     margin-left: auto;
   }
 
+}
+
+
+/* TASK STATUS FILTERS */
+
+.task-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.filter-button {
+  background: #3b3c40;
+  color: #a9abb2;
+
+  border: 1px solid #48494d;
+  border-radius: 8px;
+
+  padding: 10px 18px;
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: background 0.2s;
+}
+
+.filter-button:hover {
+  background: #48494d;
+}
+
+.filter-button.active {
+  background: #55565e;
+  color: #ffffff;
+  border-color: #777880;
+  font-weight: 600;
+}
+
+.empty-state {
+  color: #a9abb2;
+  text-align: center;
+  padding: 25px 10px;
+  font-size: 14px;
 }

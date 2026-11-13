@@ -4,6 +4,7 @@ import { useState } from "react";
 import Sidebar, {
   type Page,
 } from "./components/Sidebar";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 // Pages
 import CalendarPage from "./features/calendar/CalendarPage";
@@ -89,10 +90,16 @@ export default function App() {
 
   // Shared data
   const [categories, setCategories] =
-    useState<Category[]>(startingCategories);
+    useLocalStorage<Category[]>(
+      "diddyblud-categories-v1",
+      startingCategories
+    );
 
   const [tasks, setTasks] =
-    useState<Task[]>(startingTasks);
+    useLocalStorage<Task[]>(
+      "diddyblud-tasks-v1",
+      startingTasks
+    );
 
   // ========================================
   // CATEGORY FUNCTIONS
