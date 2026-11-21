@@ -6,6 +6,8 @@ import type {
     DueGroup,
     Task,
 } from "./types";
+import TaskForm from "./TaskForm";
+
 
 // Types
 
@@ -38,6 +40,12 @@ type TasksPageProps = {
         id: number,
         name: string
     ) => void;
+
+    onAddTask: (
+        title: string,
+        due: DueGroup,
+        categoryId: number | null
+    ) => void;
 };
 
 // consts
@@ -69,6 +77,7 @@ export default function TasksPage({
     onRenameCategory,
     onDeleteCategory,
     onChangeCategoryColor,
+    onAddTask,
 }: TasksPageProps) {
     
     // remember which task view is selected
@@ -101,6 +110,11 @@ export default function TasksPage({
                 onRename={onRenameCategory}
                 onDelete={onDeleteCategory}
                 onColorChange={onChangeCategoryColor}
+            />
+
+            <TaskForm
+                categories={categories}
+                onAdd={onAddTask}
             />
 
             {/*TASK VIEW FILTER */}

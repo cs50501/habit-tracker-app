@@ -14,6 +14,7 @@ import TasksPage from "./features/tasks/TasksPage";
 // Types
 import type {
   Category,
+  DueGroup,
   Task,
 } from "./features/tasks/types";
 
@@ -186,6 +187,26 @@ export default function App() {
     );
   }
 
+  function addTask(
+    title: string,
+    due: DueGroup,
+    categoryId: number | null
+  ) {
+    setTasks((previousTasks) => {
+      const nextId = Math.max(0, ...previousTasks.map((task) => task.id)) + 1;
+
+      const newTask: Task = {
+        id: nextId,
+        title,
+        due,
+        done: false,
+        categoryId,
+      };
+
+      return [...previousTasks, newTask];
+    });
+  }
+
   function changeTaskCategory(
     taskId: number,
     categoryId: number | null
@@ -231,16 +252,13 @@ export default function App() {
           <TasksPage
             tasks={tasks}
             categories={categories}
+            onAddTask={addTask}
             onToggleTask={toggleTask}
-            onChangeTaskCategory={
-              changeTaskCategory
-            }
+            onChangeTaskCategory={changeTaskCategory}
             onAddCategory={addCategory}
             onRenameCategory={renameCategory}
             onDeleteCategory={deleteCategory}
-            onChangeCategoryColor={
-              changeCategoryColor
-            }
+            onChangeCategoryColor={changeCategoryColor}
           />
         )}
 
