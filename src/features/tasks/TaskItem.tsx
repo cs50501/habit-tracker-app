@@ -37,17 +37,15 @@ function TaskItem({
                     onChange={() => onToggle(task.id)}
                 />
 
-                <span
-                    className="task-title"
-                    style={{
-                        textDecoration: task.done
-                            ? "line-through"
-                            : "none",
-                        opacity: task.done ? 0.5 : 1,
-                    }}
-                >
-                    {task.title}
-                </span>
+                <div className="task-text">
+                    <span className="task-title" style={{textDecoration: task.done ? "line-through" : "none", opacity: task.done ? 0.5 : 1}}>
+                        {task.title}
+                    </span>
+
+                    <small className="task-date">
+                        {task.dueDate ?? "No due date"}
+                    </small>
+                </div>
             </label>
 
             <div className="task-actions">

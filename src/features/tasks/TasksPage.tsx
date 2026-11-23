@@ -7,6 +7,7 @@ import type {
     Task,
 } from "./types";
 import TaskForm from "./TaskForm";
+import { getDueGroup } from "./dateUtils";
 
 
 // Types
@@ -43,7 +44,7 @@ type TasksPageProps = {
 
     onAddTask: (
         title: string,
-        due: DueGroup,
+        dueDate: string | null,
         categoryId: number | null
     ) => void;
 };
@@ -52,9 +53,13 @@ type TasksPageProps = {
 
 
 const dueGroups: DueGroup[] = [
+    "Overdue",
     "Today",
     "Tomorrow",
+    "Next 7 Days",
+    "Next 30 Days",
     "Later",
+    "No Due Date",
 ];
 
 
@@ -157,7 +162,7 @@ export default function TasksPage({
                     
                     // tasks belonging to current date group
                     const groupTasks = visibleTasks.filter(
-                        (task) => task.due === group
+                        (task) => getDueGroup(task.dueDate) === group
                     );
 
                     //hide groups with no tasks

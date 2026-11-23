@@ -1,5 +1,5 @@
 
-export type DueGroup = "Today" | "Tomorrow" | "Later";
+export type DueGroup = "Overdue" | "Today" | "Tomorrow" | "Next 7 Days" | "Next 30 Days" | "Later" | "No Due Date";
 
 export type Category = {
     id: number;
@@ -10,7 +10,7 @@ export type Category = {
 export type Task = {
     id: number;
     title: string;
-    due: DueGroup;
+    dueDate: string | null;
     done: boolean;
     categoryId: number | null;
 };

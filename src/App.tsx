@@ -14,12 +14,13 @@ import TasksPage from "./features/tasks/TasksPage";
 // Types
 import type {
   Category,
-  DueGroup,
   Task,
 } from "./features/tasks/types";
 
 // Styling
 import "./App.css";
+
+import { toLocalDateString } from "./features/tasks/dateUtils";
 
 // ========================================
 // INITIAL DATA
@@ -48,40 +49,50 @@ const startingCategories: Category[] = [
   },
 ];
 
-const startingTasks: Task[] = [
-  {
-    id: 1,
-    title: "Finish assignment",
-    due: "Today",
-    done: false,
-    categoryId: 1,
-  },
-  {
-    id: 2,
-    title: "Review research progress",
-    due: "Today",
-    done: false,
-    categoryId: 3,
-  },
-  {
-    id: 3,
-    title: "Buy groceries",
-    due: "Tomorrow",
-    done: false,
-    categoryId: 2,
-  },
-  {
-    id: 4,
-    title: "Work on habit tracker",
-    due: "Later",
-    done: false,
-    categoryId: 4,
-  },
-];
-
 // ========================================
 // MAIN APPLICATION
 // ========================================
+
+type OldTask = {
+  id: number;
+  title: string;
+  due: "Today" | "Tomorrow" | "Later";
+  done: boolean;
+  categoryId: number | null;
+};
+
+function migrateOldTasks(): Task[] {
+  try {
+    const saved = localStorage.getItem(
+      "diddyblud-tasks-v1"
+    );
+
+    if (!saved) return [];
+
+    const oldTasks: OldTask[] = JSON.parse(saved);
+
+    if (!Array.isArray(oldTasks)) return [];
+
+    return oldTasks.map((task) => {
+      const date = new Date();
+
+      if (task.due === "Tomorrow"){
+        date.setDate(date.getDate() + 1);
+      }
+
+      return {
+        id: task.id,
+        title: task.title,
+        done: task.done,
+        categoryId: task.categoryId,
+        dueDate: task.due === "Later" ? null : toLocalDateString(date),
+      };
+    });
+  } catch (error) {
+      console.error("Task migration failed:", error);
+      return [];
+  }
+}
 
 export default function App() {
 
@@ -99,7 +110,7 @@ export default function App() {
   const [tasks, setTasks] =
     useLocalStorage<Task[]>(
       "diddyblud-tasks-v1",
-      startingTasks
+      migrateOldTasks()
     );
 
   // ========================================
@@ -189,7 +200,7 @@ export default function App() {
 
   function addTask(
     title: string,
-    due: DueGroup,
+    dueDate: string | null,
     categoryId: number | null
   ) {
     setTasks((previousTasks) => {
@@ -198,7 +209,7 @@ export default function App() {
       const newTask: Task = {
         id: nextId,
         title,
-        due,
+        dueDate,
         done: false,
         categoryId,
       };

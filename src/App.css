@@ -465,3 +465,15 @@
   align-self: flex-start;
   padding: 11px 18px;
 }
+
+.task-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.task-date {
+  color: #a9abb2;
+  font-size: 12px;
+}

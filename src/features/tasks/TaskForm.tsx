@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from "react";
-import type { Category, DueGroup } from "./types";
+import type { Category } from "./types";
 
 type TaskFormProps = {
     categories: Category[];
+
     onAdd: (
         title: string,
-        due: DueGroup,
+        dueDate: string | null,
         categoryId: number | null
     ) => void;
 };
@@ -18,7 +19,7 @@ export default function TaskForm({
 
     // form input states
     const [title, setTitle] = useState("");
-    const [due, setDue] = useState<DueGroup>("Today");
+    const [dueDate, setDueDate] = useState("");
     const [categoryId, setCategoryId] = useState("");
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -30,12 +31,13 @@ export default function TaskForm({
 
         onAdd(
             taskTitle,
-            due,
+            dueDate || null,
             categoryId === "" ? null: Number(categoryId)
         );
 
         // clear title after adding the task
         setTitle("");
+        setDueDate("");
     }
 
     return (
@@ -79,21 +81,13 @@ export default function TaskForm({
                 </label>
 
                 <label className="task-form-field">
-                    Due
-                    <select
-                        value={due}
-                        onChange={(event)=>setDue(event.target.value as DueGroup)}
-                    >
-                        <option value="Today">
-                            Today
-                        </option>
-                        <option value="Tomorrow">
-                            Tomorrow
-                        </option>
-                        <option value="Later">
-                            Later
-                        </option>
-                    </select>
+                    Due Date
+                    
+                    <input
+                        type="date"
+                        value={dueDate}
+                        onChange={(event)=>setDueDate(event.target.value)}
+                    />
                 </label>
 
                 <button
