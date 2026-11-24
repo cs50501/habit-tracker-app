@@ -47,6 +47,14 @@ type TasksPageProps = {
         dueDate: string | null,
         categoryId: number | null
     ) => void;
+
+    onEditTask: (
+        id: number,
+        title: string,
+        dueDate: string | null
+    ) => void;
+    
+    onDeleteTask: (id: number) => void;
 };
 
 // consts
@@ -83,6 +91,8 @@ export default function TasksPage({
     onDeleteCategory,
     onChangeCategoryColor,
     onAddTask,
+    onEditTask,
+    onDeleteTask  
 }: TasksPageProps) {
     
     // remember which task view is selected
@@ -186,6 +196,8 @@ export default function TasksPage({
                                     categories={categories}
                                     onToggle={onToggleTask}
                                     onCategoryChange={onChangeTaskCategory}
+                                    onEdit={onEditTask}
+                                    onDelete={onDeleteTask}
                                 />
                             ))}
                         </section>

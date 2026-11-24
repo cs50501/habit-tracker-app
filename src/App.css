@@ -477,3 +477,59 @@
   color: #a9abb2;
   font-size: 12px;
 }
+
+
+/*========================================
+  TASK EDITING AND DELETION
+  ======================================== */
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.task-edit-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.task-edit-form .edit-title {
+    flex: 1 1 180px;
+}
+
+.task-edit-form .edit-date {
+    flex: 0 1 180px;
+}
+
+.delete-task-button {
+    padding: 8px 12px;
+
+    background: transparent;
+    color: #ff9999;
+
+    border: 1px solid #805050;
+    border-radius: 7px;
+
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.delete-task-button:hover {
+    background: #553838;
+}
+
+@media (max-width: 650px) {
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .task-edit-form .edit-date {
+        flex: 1 1 180px;
+    }
+}

@@ -231,6 +231,18 @@ export default function App() {
     );
   }
 
+  function editTask(
+    id: number,
+    title: string,
+    dueDate: string | null
+  ) {
+    setTasks((previousTasks) => previousTasks.map((task) => task.id === id ? {...task, title, dueDate} : task));
+  }
+
+  function deleteTask(id: number) {
+    setTasks((previousTasks) => previousTasks.filter((task) => task.id !== id));
+  }
+
   // ========================================
   // APPLICATION LAYOUT
   // ========================================
@@ -270,6 +282,8 @@ export default function App() {
             onRenameCategory={renameCategory}
             onDeleteCategory={deleteCategory}
             onChangeCategoryColor={changeCategoryColor}
+            onEditTask={editTask}
+            onDeleteTask={deleteTask}
           />
         )}
 
